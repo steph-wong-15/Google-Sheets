@@ -11,8 +11,11 @@ The following documentation for using the Google Sheets API with Python provides
 
  ## Prerequisites
  Python 2.6 or later
+ 
  Pip management package
+ 
  Google Cloud Platform project with the API enabled - Follow guide to set-up account: https://developers.google.com/workspace/guides/create-project
+ 
  Google Account
  
  ## Installation on Windows with a Virtual Environment
