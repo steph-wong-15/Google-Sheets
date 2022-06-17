@@ -40,7 +40,7 @@ request =sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="info!
 ## READ
 # Get request to get info from google sheets
 result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                    range="info!A1:D1").execute()
+                                    range="info!A1:D2").execute()
 values = result.get('values', [])
 
 print(result)
