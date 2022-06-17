@@ -1,65 +1,54 @@
 #referenced: https://developers.google.com/sheets/api/quickstart/python
 
-from __future__ import print_function
-
-import os.path
-
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+#referenced: https://developers.google.com/identity/protocols/oauth2/service-account#python
+from google.oauth2 import service_account
 
-# The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
+SERVICE_ACCOUNT_FILE = 'keys.json'
 
+#Allows read and write access
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-def main():
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
-    """
-    creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+# credentials set to none initially
+creds = None
+creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-    try:
-        service = build('sheets', 'v4', credentials=creds)
+# The spreadsheet ID 
+# Get spreadsheet ID from google sheets file that you want to interact with
+# ID can be found in google spread sheet url after /d/
+SAMPLE_SPREADSHEET_ID = '1ch5sZ2MtoNp4lv_kEOCPKyycAiIxSB0ahthe3aEHu4U'
 
-        # Call the Sheets API
-        sheet = service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                    range=SAMPLE_RANGE_NAME).execute()
-        values = result.get('values', [])
+   
+service = build('sheets', 'v4', credentials=creds)
 
-        if not values:
-            print('No data found.')
-            return
+# Call the Sheets API
+sheet = service.spreadsheets()
 
-        print('Name, Major:')
-        for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[4]))
-    except HttpError as err:
-        print(err)
+# Data to be written
+info_values = [['First Name', 'Last Name', 'University Subject', 'Date of Birth'], ['Adam', 'Testman', 'Computer Science', 'January 1, 1998']]
 
 
-if __name__ == '__main__':
-    main()
+## WRITE
+#referenced: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update
+request =sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="info!A1", valueInputOption="USER_ENTERED", body={"values":info_values}).execute()
+
+## READ
+# Get request to get info from google sheets
+result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                    range="info!A1:D1").execute()
+values = result.get('values', [])
+
+print(result)
+
+#print('Name, Major:')
+    #for row in values:
+    # Print columns A and E, which correspond to indices 0 and 4.
+    #print('%s, %s' % (row[0], row[4]))
+    #except HttpError as err:
+    #print(err)
+
