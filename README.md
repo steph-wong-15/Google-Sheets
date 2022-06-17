@@ -21,8 +21,8 @@ The following documentation for using the Google Sheets API with Python provides
  ## Installation on Windows with a Virtual Environment
 1. git clone
 2. cd ../GoogleSheetsProject
-3. py -m venv <environment name>
-4. <environment name>\Scripts\activate
+3. py -m venv environment_name
+4. environment_name\Scripts\activate
 5. pip install -r requirements.txt -v
  
 ## Running Python Program
