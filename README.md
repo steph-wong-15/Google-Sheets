@@ -8,6 +8,7 @@ Python program that allows user to interact with Google Sheets with the use of t
  # Set-up
 
 The following documentation for using the Google Sheets API with Python provides a useful guide: https://developers.google.com/sheets/api/quickstart/python
+Dependencies can be found in requirements.txt file
 
  ## Prerequisites
  Python 2.6 or later
