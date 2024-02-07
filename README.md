@@ -1,4 +1,4 @@
-# GoogleSheetsProject
+# Google Sheets Project
 Python program that allows user to interact with Google Sheets with the use of the Google Sheets API. It connects to a Google Sheet and adds a header row and one row of student information. It then reads the Google Sheet and outputs the results on the command line.
 
 ![image](https://user-images.githubusercontent.com/50210628/174217217-738bccd2-33a7-4447-a441-e9412047579d.png)
